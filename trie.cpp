@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 #include <map>
 using namespace std;
@@ -67,6 +69,14 @@ void eliminar(Trie* root, const string& str){
     temp->is_node = false;
 }
 
+void imprimir(Trie* root, const string str)
+{
+    Trie* temp=root;
+    if(temp->is_node)
+        cout << str<< endl;
+    for(auto &i:temp->children)
+        imprimir(i.second, str+i.first);
+}
 int main()
 {
     Trie* root = nullptr;
@@ -88,5 +98,6 @@ int main()
     eliminar(root,"yu");
     cout << search(root, "yu") << endl;
 
+    imprimir(root," ");
     return 0;
 }
