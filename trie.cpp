@@ -6,6 +6,7 @@ struct Trie {
 
     map<char, Trie*> children;
     bool is_node;
+
 };
 
 Trie* getNewTrieNode()
@@ -13,6 +14,7 @@ Trie* getNewTrieNode()
     Trie* node = new Trie;
     node->is_node = false;
     return node;
+
 }
 
 void insert(Trie*& root, const string& str)
@@ -24,7 +26,6 @@ void insert(Trie*& root, const string& str)
     for (int i = 0; i < str.length(); i++) {
         char x = str[i];
 
-        /* make a new node if there is no path */
         if (temp->children.find(x) == temp->children.end())
             temp->children[x] = getNewTrieNode();
 
@@ -51,6 +52,21 @@ bool search(Trie* root, const string& str)
     return temp->is_node;
 }
 
+void eliminar(Trie* root, const string& str){
+    Trie* temp = root;
+
+    for (int i = 0; i < str.length(); i++) {
+        char x = str[i];
+
+        if (temp->children.find(x) == temp->children.end())
+            return;
+
+        temp = temp->children[x];
+    }
+
+    temp->is_node = false;
+}
+
 int main()
 {
     Trie* root = nullptr;
@@ -67,8 +83,10 @@ int main()
     cout << search(root, "yo") << " ";
 
     insert(root, "yu");
+    cout << search(root, "yu") << " ";
+
+    eliminar(root,"yu");
     cout << search(root, "yu") << endl;
 
     return 0;
-
 }
