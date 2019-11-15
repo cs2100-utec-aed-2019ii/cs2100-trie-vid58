@@ -1,3 +1,104 @@
+/*
+#include <iostream>
+#include <map>
+using namespace std;
+
+int main(){
+
+    map<string,double>::iterator i;
+    map<string, double > personas;
+    personas["juan"] = 300.0;
+    personas["pedro"] = 400.0;
+
+    for(i = personas.begin(); i != personas.end();i++){
+        cout<< i->first <<" : "<<i->second<<endl;
+    }
+}*/
+
+/*
+#include <iostream>
+#include <map>
+//#include <algorithm>
+//#include <memory>
+using namespace std;
+
+
+
+
+class Trie {
+
+    struct Node;
+    typedef unique_ptr<Node> spNode;
+
+    struct Node {
+        map<char, spNode> children;
+        bool isLeaf;
+        Node() : isLeaf{false} {}
+    };
+
+    spNode root;
+
+public:
+    Trie():root{nullptr}{};
+    void insert(const string& str);
+    bool search(const string& str);
+};
+
+//Trie::Trie():root{nullptr}{}
+
+void Trie::insert(const string& str) {
+    if (root == nullptr) {
+        unique_ptr<Node> node(new Node());
+        root = move(node);
+    }
+
+    Node *temp = root.get();
+    for (const char& c : str) {
+        if (temp->children.find(c) == temp->children.end()) {//if char not in map
+            unique_ptr<Node> node(new Node());
+            temp->children[c] = move(node);
+        }
+
+        temp = temp->children[c].get();
+    }
+
+    temp->isLeaf = true;
+}
+
+bool Trie::search(const std::string &str) {
+    if (root == nullptr) return false;
+
+    Node *temp = root.get();
+    for (const char& c : str) {
+        if (temp->children.find(c) == temp->children.end())
+            return false;
+        temp = temp->children[c].get();
+    }
+    return (temp->isLeaf);
+}
+
+int main (void) {
+    string words[] = { "Hello", "hi", "hey", "howdy", "ho"};
+    Trie test;
+
+    for (const auto& str : words) {
+        test.insert(str);
+    }
+
+
+    if (test.search("Hello"))
+        cout << " 'Hello' is found in the trie\n";
+    else
+        cout <<" 'Hello' is not found in the trie\n";
+
+    if (test.search("yo"))
+        cout << " 'yo' is found in the trie\n";
+    else
+        cout << " 'yo' is not found in the trie\n";
+
+
+}*/
+
 #include <iostream>
 #include <map>
 using namespace std;
@@ -67,6 +168,14 @@ void eliminar(Trie* root, const string& str){
     temp->is_node = false;
 }
 
+void imprimir(Trie* root, const string str)
+{
+    Trie* temp=root;
+    if(temp->is_node)
+        cout << str<< endl;
+    for(auto &i:temp->children)
+        imprimir(i.second, str+i.first);
+}
 int main()
 {
     Trie* root = nullptr;
@@ -88,5 +197,6 @@ int main()
     eliminar(root,"yu");
     cout << search(root, "yu") << endl;
 
+    imprimir(root," ");
     return 0;
 }
